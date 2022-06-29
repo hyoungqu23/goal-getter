@@ -2,11 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import GoalItem from './GoalItem';
 
-const GoalList = ({ goals }) => {
+const GoalList = ({ goals, onDelete }) => {
   return (
     <StyledGoalList>
       {goals.map((goal) => {
-        return <GoalItem>{goal}</GoalItem>;
+        return (
+          <GoalItem key={goal.id} onDelete={onDelete} id={goal.id}>
+            {goal.title}
+          </GoalItem>
+        );
       })}
     </StyledGoalList>
   );
