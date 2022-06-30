@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../UI/Button';
 
 const GoalForm = ({ onSubmit }) => {
+  const [isValid, setIsValid] = useState(true);
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    onSubmit(e.target.goalForm.value);
+    // 공백인 경우 입력 불가능
+    isValid && onSubmit(e.target.goalForm.value);
+  };
+
+  const handleInputChange = (e) => {
+    const enterGoal = e.target.value;
+
+    enterGoal.trim().length === 0 ? setIsValid(false) : setIsValid(true);
   };
 
   return (
     <StyledGoalForm onSubmit={handleFormSubmit}>
-      <label htmlFor="goalForm">What's your Goal?</label>
-      <input type="text" name="goalForm" placeholder="What's your Goal?" />
+      <label htmlFor="goalForm" isValid>
+        What's your Goal?
+      </label>
+      <input
+        type="text"
+        name="goalForm"
+        placeholder="What's your Goal?"
+        onChange={handleInputChange}
+        isValid
+      />
       <Button type="submit">Add Goal</Button>
     </StyledGoalForm>
   );
@@ -32,6 +49,7 @@ const StyledGoalForm = styled.form`
     font-weight: bold;
     display: block;
     margin-bottom: 0.5rem;
+    color: ${(props) => (props.isValid ? 'black' : 'red')};
   }
 
   & input {
@@ -42,6 +60,8 @@ const StyledGoalForm = styled.form`
     line-height: 1.5rem;
     padding: 0 0.25rem;
     margin-bottom: 0.5rem;
+    color: ${(props) => (props.isValid ? 'black' : 'red')};
+    border: 1px solid ${(props) => (props.isValid ? '#ccc' : 'red')};
   }
 
   & input:focus {
